@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChefDuo | Our Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+
+    <a href="home.html" class="logo-link" aria-label="ChefDuo home">
+      <img src="src/logo.jpg" alt="ChefDuo logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="logo-fallback" aria-hidden="true">Chef<span class="logo-accent">Duo</span></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <ul class="nav-list">
+<li><a href="home.html" class="nav-link">Home</a></li>
+<li><a href="about.html" class="nav-link">About Us</a></li>
+<li><a href="menu.html" class="nav-link active">Our Menu</a></li>
+<li><a href="reviews.html" class="nav-link">Reviews</a></li>
+        <li>
+          <a href="https://www.facebook.com/chefduo.bagumbayan" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mainNav">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
+
+<!-- ===== PAGE CONTENT ===== -->
+<main>
+  <section id="full-menu" class="full-menu-section">
+    <div class="full-menu-inner">
+
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="menu-sidebar">
+        <h3 class="sidebar-heading">Products</h3>
+        <ul class="sidebar-list">
+          <li><a href="#" class="sidebar-link active" data-filter="all">All</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="poppers-series">Poppers Series</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="rice-meal">Rice Meal</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="ala-cart">Ala Carte</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="short-order">Short Order</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="rice">Rice</a></li>
+          <li><a href="#" class="sidebar-link" data-filter="drinks-desserts">Drinks & Desserts</a></li>
+      </ul>
+      </aside>
+
+<!-- ===== PRODUCT GRID ===== -->
+      <div class="product-grid">
+
+<article class="product-card" data-category="poppers-series">
+          <div class="product-media">
+            <img src="src/poppers-series.jpg" alt="Poppers Series" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Poppers Series</h4>
+            <p class="product-desc">&#8369;99</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/FoodImg2.jpg" alt="Cheesy Spicy Tocino" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Cheesy Spicy Tocino</h4>
+            <p class="product-desc">&#8369;114</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/menu2.jpg" alt="Cheesy Spicy Hungarian" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Cheesy Spicy Hungarian</h4>
+            <p class="product-desc">&#8369;99</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/marinated.jpg" alt="Marinated Porksilog" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Marinated Porksilog</h4>
+            <p class="product-desc">&#8369;114</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/og-tapa.jpg" alt="OG Tapsilog" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">OG Tapsilog "The Original"</h4>
+            <p class="product-desc">&#8369;109</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/menu5.jpg" alt="Breaded Porkchop" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Breaded Porkchop</h4>
+            <p class="product-desc">&#8369;109</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/FoodImg7.jpg" alt="Coated Tonkatsu" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Coated Tonkatsu</h4>
+            <p class="product-desc">&#8369;119</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/diablo.jpg" alt="Diablo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Diablo</h4>
+            <p class="product-desc">&#8369;119</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/cheesy-tapa.jpg" alt="Cheesy Spicy Tapa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Cheesy Tapa</h4>
+            <p class="product-desc">&#8369;119</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/FoodImg10.jpg" alt="Spicy Tapa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Spicy Tapa</h4>
+            <p class="product-desc">&#8369;119</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/chicken-sriracha.jpg" alt="Chicken Sriracha" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Chicken Sriracha</h4>
+            <p class="product-desc">&#8369;119</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/chicken-fries.jpg" alt="Chicken & Fries" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Chicken & Fries</h4>
+            <p class="product-desc">&#8369;124</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/menu3.jpg" alt="Poppers & Rice" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Poppers & Rice</h4>
+            <p class="product-desc">&#8369;124</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/menu4.jpg" alt="Lechon Kawali" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Lechon Kawali</h4>
+            <p class="product-desc">&#8369;124</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/FoodImg15.jpg" alt="Sizzling Sisig" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Sizzling Sisig</h4>
+            <p class="product-desc">&#8369;124</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice-meal">
+          <div class="product-media">
+            <img src="src/menu1.jpg" alt="Herb Chicken" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Herb Chicken</h4>
+            <p class="product-desc">&#8369;149</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/special-beef.jpg" alt="Special Beef Mami" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Special Beef Mami</h4>
+            <p class="product-desc">&#8369;80</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/fries.jpg" alt="Fries Solo w/ Cheese Dip" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Fries Solo w/ Cheese Dip</h4>
+            <p class="product-desc">&#8369;80</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/tapa-puluts.jpg" alt="Tapa Puluts" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Tapa Puluts</h4>
+            <p class="product-desc">&#8369;80</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/diablo.jpg" alt="Chicken Poppers Ala Carte" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Chicken Poppers Ala Carte</h4>
+            <p class="product-desc">&#8369;125</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/sisig.jpg" alt="Sisig Ala Carte" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Sisig Ala Carte</h4>
+            <p class="product-desc">&#8369;150</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="ala-cart">
+          <div class="product-media">
+            <img src="src/poppersfries.jpg" alt="Poppers & Fries" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Poppers & Fries</h4>
+            <p class="product-desc">&#8369;160</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="short-order">
+          <div class="product-media">
+            <img src="src/pancit-mix.jpg" alt="Pancit Mix" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Pancit Mix</h4>
+            <p class="product-desc">&#8369;160</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="short-order">
+          <div class="product-media">
+            <img src="src/pancit-bihon.jpg" alt="Pancit Bihon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Pancit Bihon</h4>
+            <p class="product-desc">&#8369;160</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="short-order">
+          <div class="product-media">
+            <img src="src/pancit-canton.jpg" alt="Pancit Canton" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Pancit Canton</h4>
+            <p class="product-desc">&#8369;170</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice">
+          <div class="product-media">
+            <img src="src/plain-rice.jpg" alt="Plain Rice" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Plain Rice</h4>
+            <p class="product-desc">&#8369;15</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice">
+          <div class="product-media">
+            <img src="src/cheesy-rice.png" alt="Cheesy Rice" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Cheesy Rice</h4>
+            <p class="product-desc">&#8369;20</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice">
+          <div class="product-media">
+            <img src="src/garlic-rice.jpg" alt="Garlic Rice" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Garlic Rice</h4>
+            <p class="product-desc">&#8369;17</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="rice">
+          <div class="product-media">
+            <img src="src/spicy-rice.jpg" alt="Spicy Rice" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Spicy Rice</h4>
+            <p class="product-desc">&#8369;20</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="drinks-desserts">
+          <div class="product-media">
+            <img src="src/FoodImg31.jpg" alt="Blue Lemonade" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Blue Lemonade</h4>
+            <p class="product-desc">&#8369;40</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="drinks-desserts">
+          <div class="product-media">
+            <img src="src/FoodImg32.jpg" alt="Red Iced Tea" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Red Iced Tea</h4>
+            <p class="product-desc">&#8369;40</p>
+          </div>
+        </article>
+
+        <article class="product-card" data-category="drinks-desserts">
+          <div class="product-media">
+            <img src="src/FoodImg33.jpg" alt="Cucumber" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="product-fallback" aria-hidden="true">Photo</div>
+          </div>
+          <div class="product-info">
+            <h4 class="product-name">Cucumber</h4>
+            <p class="product-desc">&#8369;45</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="script.js"></script>
+</body>
+</html>
