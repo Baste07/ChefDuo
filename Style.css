@@ -81,7 +81,7 @@ body.splash-active {
 }
 
 .splash-eyebrow {
-  font-size: 23px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--warm-grey);
   letter-spacing: 0.08em;
@@ -90,7 +90,7 @@ body.splash-active {
 }
 
 .splash-title {
-  font-size: 120px;
+  font-size: 70px;
   font-weight: 800;
   color: var(--chili-red);
   line-height: 1;
@@ -256,9 +256,10 @@ body.splash-active {
     transition: max-height var(--transition);
   }
 
-  .main-nav.open {
-    max-height: 260px;
-  }
+.main-nav.open {
+  max-height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+}
 
   .nav-list {
     flex-direction: column;
@@ -303,33 +304,33 @@ body.splash-active {
 }
 
 .hero-eyebrow {
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--warm-grey);
-  margin-bottom: -5px;
+  margin-bottom: 8px;
   text-transform: uppercase;
 }
 
 .hero-title {
-  font-size: 90px;
+  font-size: clamp(3.5rem, 10vw, 90px);
   font-weight: 800;
   color: var(--chili-red);
   line-height: 1.05;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .hero-tagline {
-  font-size: 25px;
+  font-size: clamp(0.9rem, 4vw, 25px);
   color: var(--deep-grey);
   line-height: 1.7;
-  margin-bottom: 20px;
-  margin-top: -25px;
+  margin-top: 0;
+  margin-bottom: 24px;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
 }
 
 .btn {
@@ -375,11 +376,8 @@ body.splash-active {
 
 /* ---- Carousel ---- */
 .hero-carousel {
-  display: flex;              
-  flex-direction: column;
-  gap: 16px;
-  margin-top: -50px;
-
+  margin-top: 24px;
+  margin-bottom: -20px;
 }
 
 .carousel-viewport {
@@ -436,6 +434,7 @@ body.splash-active {
   display: flex;
   justify-content: center;
   gap: 10px;
+  margin-top: 16px;
 }
 
 .carousel-dot {
@@ -469,9 +468,11 @@ body.splash-active {
   }
 
   .hero-content {
-    max-width: none;
-    text-align: center;
-  }
+  max-width: none;
+  text-align: center;
+  margin-left: 0;
+  margin-top: 0;
+}
 
   .hero-actions {
     justify-content: center;
@@ -791,6 +792,10 @@ body.splash-active {
   .menu-section {
     padding: 0 0 64px;
   }
+  
+    #menu {
+    padding: 0;
+  }
 
   .menu-heading {
     padding: 24px 24px 32px;
@@ -802,6 +807,15 @@ body.splash-active {
     gap: 28px;
     text-align: center;
     min-height: 0;
+  }
+
+  .menu-slide-text {
+    margin-left: 0;
+  }
+
+  .featured-text {
+    font-size: 26px;
+    letter-spacing: 0.06em;
   }
 
   .menu-slide-desc {
@@ -1779,5 +1793,89 @@ body.splash-active {
 @media (max-width: 560px) {
   .crew-title {
     font-size: 32px;
+  }
+}
+
+/* =========================================================
+   IMAGE LIGHTBOX
+   ========================================================= */
+.product-card,
+.menu-slide-media {
+  cursor: zoom-in;
+}
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px 24px;
+  background: rgba(20, 20, 20, 0.9);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.image-modal.open {
+  display: flex;
+  opacity: 1;
+}
+
+.image-modal-inner {
+  position: relative;
+  max-width: 90vw;
+  max-height: 85vh;
+}
+
+.image-modal-inner img {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  border-radius: 14px;
+  object-fit: contain;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pure-white);
+  color: var(--charcoal);
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.image-modal-close:hover,
+.image-modal-close:focus-visible {
+  background: var(--chili-red);
+  color: var(--pure-white);
+  transform: rotate(90deg);
+}
+
+@media (max-width: 560px) {
+  .image-modal {
+    padding: 40px 16px 16px;
+  }
+
+  .image-modal-close {
+    top: -14px;
+    right: -14px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.3rem;
   }
 }
