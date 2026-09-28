@@ -268,3 +268,65 @@ if (happeningsViewport && happeningsTrack && happeningsPrev && happeningsNext) {
 fetch('footer.html')
   .then(res => res.text())
   .then(data => document.getElementById('footer-placeholder').innerHTML = data);
+
+/* ---- Image lightbox (product cards + featured menu images) ---- */
+(function () {
+  const imageModal = document.getElementById('imageModal');
+  const imageModalImg = document.getElementById('imageModalImg');
+  const imageModalClose = document.getElementById('imageModalClose');
+  const lightboxTriggers = document.querySelectorAll('.product-card, .menu-slide-media');
+
+  if (!imageModal || !imageModalImg || !imageModalClose || !lightboxTriggers.length) return;
+
+  let lastFocused = null;
+
+  function openImageModal(img) {
+    if (!img || !img.src) return;
+    lastFocused = document.activeElement;
+    imageModalImg.src = img.src;
+    imageModalImg.alt = img.alt || '';
+    imageModal.classList.add('open');
+    imageModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    imageModalClose.focus();
+  }
+
+  function closeImageModal() {
+    imageModal.classList.remove('open');
+    imageModal.setAttribute('aria-hidden', 'true');
+    imageModalImg.src = '';
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  lightboxTriggers.forEach(trigger => {
+    const img = trigger.querySelector('img');
+    if (!img) return;
+
+    trigger.addEventListener('click', (e) => {
+      // Don't hijack clicks on links/buttons that may live inside the trigger
+      if (e.target.closest('a, button')) return;
+      openImageModal(img);
+    });
+
+    trigger.setAttribute('tabindex', '0');
+    trigger.setAttribute('role', 'button');
+    trigger.setAttribute('aria-label', `View full image: ${img.alt || 'photo'}`);
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openImageModal(img);
+      }
+    });
+  });
+
+  imageModalClose.addEventListener('click', closeImageModal);
+
+  imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) closeImageModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && imageModal.classList.contains('open')) closeImageModal();
+  });
+})();
