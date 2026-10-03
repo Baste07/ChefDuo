@@ -75,8 +75,10 @@
               <img src="src/photo3.jpg" alt="ChefDuo dish 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" draggable="false">
               <div class="slide-fallback" aria-hidden="true">Photo 2</div>
             </div>
-
-            
+            <div class="carousel-slide">
+              <img src="src/photo4.jpg" alt="ChefDuo dish 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" draggable="false">
+              <div class="slide-fallback" aria-hidden="true">Photo 2</div>
+            </div>
             <div class="carousel-slide">
               <img src="src/happening6.jpg" alt="ChefDuo dish 5" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" draggable="false">
               <div class="slide-fallback" aria-hidden="true">Photo 5</div>
@@ -91,46 +93,56 @@
       </div>
     </div>
   </section>
-    <!-- ===== STORE INFO ===== -->
+  
+<!-- ===== STORE INFO ===== -->
   <section id="store-info" class="store-info-section">
-  <div class="store-info-inner">
-
-    <div class="store-info-heading">
-      <p class="store-info-eyebrow">Good to Know</p>
-      <h2 class="store-info-title">Visit Us</h2>
-    </div>
-
-    <div class="store-info-grid">
-
-      <div class="info-card">
-        <div class="info-card-head">
-          <div class="info-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-          </div>
-          <h3 class="info-card-title">Store Hours</h3>
-        </div>
-        <p class="info-card-text">Monday – Saturday<br>3:00 PM – 3:00 AM</p>
+    <div class="store-info-inner">
+      <div class="store-info-heading">
+        <p class="store-info-eyebrow">Good to Know</p>
+        <h2 class="store-info-title">Visit Us</h2>
       </div>
-
-      <div class="info-card">
-        <div class="info-card-head">
-          <div class="info-card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <div class="store-info-grid">
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="info-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <h3 class="info-card-title">Store Hours</h3>
           </div>
-          <h3 class="info-card-title">Free Delivery</h3>
-        </div>
-        <p class="info-card-subtext">In selected areas</p>
-        <ul class="info-list">
-          <li>Bagumbayan Residential</li>
-          <li>Eastwood</li>
-          <li>Circulo Verde</li>
-          <li>Aspire / Dream Tower</li>
-        </ul>
-      </div>
 
+          <span class="hours-status closed" id="hoursStatus">Checking…</span>
+          <p class="hours-time">3:00 PM <small>to</small> 3:00 AM</p>
+          <p class="hours-range">Monday to Saturday</p>
+
+          <div class="hours-days" id="hoursDays" aria-label="Open days">
+            <span class="hours-day" data-d="1">M</span>
+            <span class="hours-day" data-d="2">T</span>
+            <span class="hours-day" data-d="3">W</span>
+            <span class="hours-day" data-d="4">T</span>
+            <span class="hours-day" data-d="5">F</span>
+            <span class="hours-day" data-d="6">S</span>
+            <span class="hours-day off" data-d="0">S</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="info-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </div>
+            <h3 class="info-card-title">Free Delivery</h3>
+          </div>
+          <p class="info-card-subtext">In selected areas</p>
+          <ul class="area-chips">
+            <li>Bagumbayan Residential</li>
+            <li>Eastwood</li>
+            <li>Circulo Verde</li>
+            <li>Aspire / Dream Tower</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
 <div id="footer-placeholder"></div>
 <script src="Script.js"></script>

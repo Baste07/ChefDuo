@@ -7,20 +7,16 @@
   --golden-yellow: #F2C230;
   --pure-white:    #FFFFFF;
   --warm-grey:     #7A7A7A;
-
   --light-grey:    #F2F2F2;
   --deep-grey:     #4A4A4A;
   --soft-cream:    #FFF8E7;
   --chili-red-dark: #B8202C;
-
   --font: 'Poppins', sans-serif;
-
   --header-h: 84px;
   --transition: 0.25s ease;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
 
 body {
@@ -42,6 +38,7 @@ img { max-width: 100%; display: block; }
 /* =========================================================
    SPLASH / INTRO SCREEN
    ========================================================= */
+
 body.splash-active {
   overflow: hidden;
 }
@@ -119,7 +116,9 @@ body.splash-active {
   justify-content: space-between;
 }
 
-/* Logo */
+/* =========================================================
+   LOGO
+   ========================================================= */
 .logo-link {
   display: flex;
   align-items: center;
@@ -152,7 +151,9 @@ body.splash-active {
 
 .logo-accent { color: var(--chili-red); }
 
-/* Nav */
+/* =========================================================
+   SIDE NAVIGATION BAR
+   ========================================================= */
 .main-nav {
   display: flex;
 }
@@ -207,7 +208,10 @@ body.splash-active {
   background: var(--chili-red);
 }
 
-/* Mobile nav toggle */
+/* =========================================================
+   MOBILE NAVIGATION BAR TOGGLE
+   ========================================================= */
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -280,7 +284,7 @@ body.splash-active {
 }
 
 /* =========================================================
-   HERO / HOME
+   HERO / HOME SECTION
    ========================================================= */
 .hero-section {
   background: var(--pure-white);
@@ -374,7 +378,9 @@ body.splash-active {
   color: var(--chili-red);
 }
 
-/* ---- Carousel ---- */
+/* =========================================================
+   CAROUSEL
+   ========================================================= */
 .hero-carousel {
   margin-top: 24px;
   margin-bottom: -20px;
@@ -484,7 +490,7 @@ body.splash-active {
 }
 
 /* =========================================================
-   PLACEHOLDER CONTENT (temporary — sections to be built next)
+   PLACEHOLDER CONTENT 
    ========================================================= */
 .placeholder-section {
   min-height: 60vh;
@@ -514,10 +520,6 @@ body.splash-active {
 /* =========================================================
    OUR MENU / FEATURED MENU
    ========================================================= */
-#menu {
-  padding: 30px;
-}
-
 .menu-section {
   padding: 0 0 96px;
   scroll-margin-top: var(--header-h);
@@ -550,7 +552,9 @@ body.splash-active {
   line-height: 1.1;
 }
 
-/* ---- Carousel shell (full width / edge-to-edge) ---- */
+/* =========================================================
+   CAROUSEL SHELL
+   ========================================================= */
 .menu-carousel {
   width: 100%;
   display: flex;
@@ -576,7 +580,6 @@ body.splash-active {
   transition: transform 0.5s ease;
 }
 
-/* ---- Individual banner slide (full-bleed red, content stays aligned) ---- */
 .featured-text {
   font-size: 35px;
   font-weight: 800;
@@ -693,7 +696,10 @@ body.splash-active {
   color: var(--chili-red);
 }
 
-/* ---- Slide media / image + price badge ---- */
+/* =========================================================
+   MENU SLIDE / MEDIA + PRICE BADGE
+   ========================================================= */
+
 .menu-slide-media {
   position: relative;
   z-index: 1;
@@ -758,7 +764,10 @@ body.splash-active {
   color: var(--chili-red);
 }
 
-/* ---- Dots (shared visual language with hero carousel) ---- */
+/* =========================================================
+   MENU DOTS
+   ========================================================= */
+
 .menu-dots {
   display: flex;
   justify-content: center;
@@ -791,10 +800,6 @@ body.splash-active {
 @media (max-width: 900px) {
   .menu-section {
     padding: 0 0 64px;
-  }
-  
-    #menu {
-    padding: 0;
   }
 
   .menu-heading {
@@ -860,13 +865,6 @@ body.splash-active {
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-}
-
-.logo-img {
-  width: 50px;         
-  height: 50px;          
-  border-radius: 50%;
-  object-fit: cover;   
 }
 
 .footer-logo-fallback {
@@ -996,7 +994,7 @@ body.splash-active {
 .categories-heading {
   display: flex;
   align-items: center;
-  justify-content: space-between;   /* keeps title left, button right */
+  justify-content: space-between;  
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 32px;
@@ -1006,12 +1004,6 @@ body.splash-active {
   font-size: 40px;
   font-weight: 800;
   color: var(--charcoal);
-  /* remove the margin: 0 0 0 110px; line entirely */
-}
-
-.categories-subtext {
-  font-size: 0.9rem;
-  color: var(--warm-grey);
 }
 
 .categories-grid {
@@ -1110,7 +1102,6 @@ body.splash-active {
   align-items: start;
 }
 
-/* ---- Sidebar ---- */
 .menu-sidebar {
   position: sticky;
   top: calc(var(--header-h) + 24px);
@@ -1157,7 +1148,9 @@ body.splash-active {
   }
 }
 
-/* ---- Product grid ---- */
+/* =========================================================
+   PRODUCT GRID
+   ========================================================= */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1239,10 +1232,6 @@ body.splash-active {
   .product-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
 }
 
 /* =========================================================
@@ -1576,19 +1565,18 @@ body.splash-active {
   gap: 20px;
 }
 
-/* Frame sizes to the photo itself so the whole picture is visible */
 .story-img-frame {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(43, 43, 43, 0.15);
-  max-width: 420px;   /* keeps the portrait photo from getting too tall */
+  max-width: 420px; 
   margin: 0 auto;
 }
 
 .story-img-frame img {
   width: 100%;
-  height: auto;       /* keeps the photo's natural shape */
+  height: auto;      
   display: block;
 }
 
@@ -1713,11 +1701,6 @@ body.splash-active {
   .happenings-title {
     font-size: 32px;
   }
-}
-
-.scroll-trigger {
-  height: 40vh;
-  background: var(--soft-cream);
 }
 
 /* =========================================================
@@ -1921,34 +1904,30 @@ body.splash-active {
 
 .store-info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
 .info-card {
   background: var(--pure-white);
-  border-radius: 18px;
+  border-radius: 24px;
   padding: 32px;
-  box-shadow: 0 12px 28px rgba(43, 43, 43, 0.08);
-  transition: transform var(--transition);
-}
-
-.info-card:hover {
-  transform: translateY(-4px);
+  box-shadow: 0 1px 2px rgba(43, 43, 43, 0.05),
+              0 18px 40px -18px rgba(43, 43, 43, 0.2);
 }
 
 .info-card-head {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .info-card-icon {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: 16px;
   background: var(--soft-cream);
   color: var(--chili-red);
   display: flex;
@@ -1957,7 +1936,7 @@ body.splash-active {
 }
 
 .info-card-title {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--charcoal);
   text-transform: uppercase;
@@ -1965,46 +1944,133 @@ body.splash-active {
 }
 
 .info-card-subtext {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--warm-grey);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+}
+/* =========================================================
+   STORE HOURS
+   ========================================================= */
+.hours-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+  background: #E8F5E9;
+  color: #1F8F4E;
 }
 
-.info-card-text {
-  font-size: 0.95rem;
-  color: var(--deep-grey);
-  line-height: 1.6;
+.hours-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
-.info-list {
+.hours-status.open::before {
+  animation: openPulse 2s ease-out infinite;
+}
+
+.hours-status.closed {
+  background: var(--light-grey);
+  color: var(--warm-grey);
+}
+
+@keyframes openPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(31, 143, 78, 0.5); }
+  100% { box-shadow: 0 0 0 8px rgba(31, 143, 78, 0); }
+}
+
+.hours-time {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--charcoal);
+}
+
+.hours-time small {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--warm-grey);
+  letter-spacing: 0;
+}
+
+.hours-range {
+  color: var(--warm-grey);
+  margin: 6px 0 22px;
+}
+
+.hours-days {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
-.info-list li {
+.hours-day {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--soft-cream);
+  color: var(--chili-red-dark);
+}
+
+.hours-day.off {
+  background: var(--light-grey);
+  color: #A5A5A5;
+}
+
+.hours-day.today {
+  background: var(--chili-red);
+  color: var(--pure-white);
+}
+
+/* =========================================================
+   DELIVERY AREAS
+   ========================================================= */
+.area-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.area-chips li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #FAF8F5;
+  border: 1px solid #ECE7DF;
   font-size: 0.95rem;
-  color: var(--deep-grey);
-  padding-left: 18px;
-  position: relative;
+  font-weight: 500;
+  color: var(--charcoal);
 }
 
-.info-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--chili-red);
-  font-weight: 700;
+.area-chips li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--chili-red);
 }
 
 @media (max-width: 600px) {
-  .store-info-grid {
-    grid-template-columns: 1fr;
-  }
+  .store-info-section { padding: 64px 16px 72px; }
+  .info-card { padding: 24px; }
+}
 
-  .info-card {
-    padding: 24px;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .hours-status.open::before { animation: none; }
 }
 
 .product-flavors {
@@ -2054,7 +2120,9 @@ body.splash-active {
   white-space: nowrap;
 }
 
-/* ---- Spice level tags ---- */
+/* =========================================================
+   FLAVOR TAGS
+   ========================================================= */
 .flavor-tag--spicy {
   display: inline-flex;
   align-items: center;
