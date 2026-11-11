@@ -1073,6 +1073,20 @@ body.splash-active {
   line-height: 1.2;
 }
 
+.category-new-badge {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--golden-yellow);
+  color: var(--charcoal);
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.06em;
+}
+
 @media (max-width: 900px) {
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);

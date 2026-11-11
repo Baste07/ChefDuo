@@ -158,7 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullMenuSection = document.getElementById('full-menu');
 
   if (sidebarLinks.length && productCards.length) {
+    const availableFilters = new Set(Array.from(sidebarLinks, (link) => link.dataset.filter));
     const applyFilter = (filter, { scroll = false } = {}) => {
+      filter = availableFilters.has(filter) ? filter : 'all';
       sidebarLinks.forEach((link) => {
         link.classList.toggle('active', link.dataset.filter === filter);
       });
