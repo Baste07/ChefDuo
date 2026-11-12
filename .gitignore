@@ -1,0 +1,11 @@
+# Local documentation, editor state, and verification backups.
+/AGENTS.md
+/Chefduo/
+/Sample/
+/.artifacts/
+
+# Original sushi photos; the website uses the tracked responsive WebP assets.
+/src/All Sushi preview.jfif
+/src/California Maki.jfif
+/src/Mango Kani Maki.jfif
+/src/Volcano Maki.jfif
