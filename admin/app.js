@@ -10,6 +10,7 @@ const preview = new URLSearchParams(location.search).get("preview") === "1";
 const path = location.pathname.replace(adminURL.pathname, "").replace(/\/$/, "");
 const route = path.replace(/\/index\.html$/, "").replace(/^index\.html$/, "");
 let drafts;
+let imageEditing = true, existingItemsOnly = false;
 let client, user, catalog = { products: [], categories: [] };
 const e = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -253,7 +254,7 @@ async function draftActivity(){
   return (await drafts.events()).map(row=>({...row,actor_email:row.actor_id===user.id?user.email:'Staff '+row.actor_id}));
 }
 async function dashboard(main) {
-  heading(main, "Your menu, at a glance.", "Keep every dish up to date, from wherever you are.", link("+ Add product", href("products/new"), "button primary"));
+  heading(main, "Your menu, at a glance.", "Keep every dish up to date, from wherever you are.", existingItemsOnly?e('p','notice','Existing items only; image management remains disabled.'):link("+ Add product", href("products/new"), "button primary"));
   const metrics = e("div", "metrics");
   for (const [label, value] of [["Total products", catalog.products.length], ["Published products", catalog.products.filter((p) => p.status === "published").length], ["Hidden / archived", catalog.products.filter((p) => p.status !== "published").length], ["Categories", catalog.categories.length]]) {
     const n = e("section", "metric");
@@ -318,7 +319,7 @@ async function quickPrice(item) {
   };
 }
 async function products(main) {
-  heading(main, "Products", "A place for every ChefDuo favorite.", link("+ Add product", href("products/new"), "button primary"));
+  heading(main, "Products", "A place for every ChefDuo favorite.", existingItemsOnly?e('p','notice','Existing items only; image management remains disabled.'):link("+ Add product", href("products/new"), "button primary"));
   const bar = e("div", "toolbar"), search = field("Search products", "search"), category = selectField("Category", [["", "All categories"], ...catalog.categories.map((c) => [c.id || c.slug, c.name])], ""), visibility = selectField("Visibility", [["", "All statuses"], ["published", "Published"], ["hidden", "Hidden"], ["archived", "Archived"]], "");
   search.input.placeholder = "Search by name\u2026";
   bar.append(search.label, category.label, visibility.label);
@@ -357,6 +358,7 @@ async function products(main) {
 async function editProduct(main) {
   const id = new URLSearchParams(location.search).get("id");
   const item = catalog.products.find((p) => (p.id || p.legacy_key) === id);
+  if(existingItemsOnly&&!item)throw Error('New products remain disabled while image management is held.');
   if (id && !item) throw new Error("Product not found.");
   heading(main, item ? "Edit product" : "Add a new favorite", "Changes are saved only after you choose Save.", link("\u2190 Products", href("products")));
   const form = e("form", "panel form-grid product-editor");
@@ -424,6 +426,8 @@ async function editProduct(main) {
   flavors.label.classList.add("wide");
   const image = field("Upload photograph \u2014 JPG, PNG or WebP, up to 5 MB", "file");
   image.input.accept = "image/jpeg,image/png,image/webp";
+  image.input.disabled = !imageEditing;
+  if(!imageEditing)image.label.append(e('small','help','Image uploads and replacements are disabled. Existing photographs are preserved.'));
   image.label.classList.add("wide");
   const previewImg = e("img", "image-preview");
   previewImg.alt = "Product photograph preview";
@@ -480,7 +484,7 @@ async function editProduct(main) {
     try {
       const payload = { sort_order:Number(order.input.value), available:availability.input.value==="yes", name: name.input.value.trim(), category_id: category.input.value, description: description.input.value.trim(), status: state.input.value, price_cents: mode.input.value === "base" ? parseCentavos(price.input.value) : null, variants: mode.input.value === "variants" ? variantInputs.map((x) => ({ name: x.n.input.value.trim(), price_cents: parseCentavos(x.p.input.value) })) : [], flavors: flavors.input.value.split("\n").map((v) => v.trim()).filter(Boolean) };
       if (mode.input.value === "variants" && !payload.variants.length) throw new Error("Add at least one price variant.");
-      if (image.input.files[0]) {
+      if (imageEditing && image.input.files[0]) {
         uploaded = await drafts.upload(image.input.files[0]);
         payload.image_path = null;
         payload.image_url = uploaded;
@@ -498,11 +502,14 @@ async function editProduct(main) {
   };
 }
 async function categoryForm(item) {
+  if(existingItemsOnly&&!item)throw Error('New categories remain disabled while image management is held.');
   const { d, f } = modal(item ? "Edit category" : "New category");
   const name = field("Category name", "text", item?.name || "", true), slug = field("Permanent link identifier", "text", item?.slug || "", true), description = field("Description", "textarea", item?.description || ""), order = field("Display order", "number", item?.sort_order || 0, true), state = selectField("Visibility", [["published", "Published"], ["hidden", "Hidden"], ["archived", "Archived"]], item?.status || "hidden"), image = field("Category photograph (max 5 MB)", "file");
   slug.input.pattern = "[a-z0-9]+(-[a-z0-9]+)*";
   slug.input.readOnly = !!item;
   image.input.accept = "image/jpeg,image/png,image/webp";
+  image.input.disabled = !imageEditing;
+  if(!imageEditing)image.label.append(e('small','help','Image uploads and replacements are disabled.'));
   f.append(name.label, slug.label, e("small", "help", "The link identifier stays fixed so existing category links keep working."), description.label, order.label, state.label, image.label);
   const actions = e("div", "actions");
   const submit = e("button", "primary", "Save category");
@@ -523,7 +530,7 @@ async function categoryForm(item) {
       guardWrite();
       const payload = { name: name.input.value.trim(), description: description.input.value.trim(), sort_order: Number(order.input.value), status: state.input.value };
       if (!item) payload.slug = slug.input.value;
-      if (image.input.files[0]) {
+      if (imageEditing && image.input.files[0]) {
         uploaded = await drafts.upload(image.input.files[0]);
         payload.image_path = null;
         payload.image_url = uploaded;
@@ -541,7 +548,7 @@ async function categoryForm(item) {
   };
 }
 async function categories(main) {
-  heading(main, "Categories", "Organize your menu. Keep familiar links working.", button("+ Add category", () => categoryForm(), "primary"));
+  heading(main, "Categories", "Organize your menu. Keep familiar links working.", existingItemsOnly?e('p','notice','Existing categories only; image management remains disabled.'):button("+ Add category", () => categoryForm(), "primary"));
   const grid = e("div", "category-grid");
   for (const item of catalog.categories) {
     const card = e("article", "category-card"), img = e("img");
@@ -652,7 +659,10 @@ async function render() {
 async function start() {
   try {
     client = await connection();
-    if(client && (await readConfig(false)).catalogEditing === "atomic-v1") drafts=new CatalogDrafts(client);
+    const editingConfig=await readConfig(false);
+    imageEditing=editingConfig.imageEditing!==false;
+    existingItemsOnly=editingConfig.existingItemsOnly===true;
+    if(client && editingConfig.catalogEditing === "atomic-v1") drafts=new CatalogDrafts(client,{imageEditing,existingItemsOnly});
     if (preview && !allowPreview) throw new Error("Design preview is available only in the local development checkout.");
     if (preview) {
       catalog = await (await fetch(new URL("admin/catalog-snapshot.json", root))).json();
