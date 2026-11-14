@@ -1,0 +1,21 @@
+{
+  "name": "chefduo-menu-admin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node --test tests/*.test.js",
+    "test:mobile": "node tests/mobile-browser.cjs",
+    "test:accounts-ui": "node tests/accounts-browser.cjs",
+    "test:review-ui": "node tests/review-ui.cjs",
+    "build:admin": "node tools/build-admin.mjs",
+    "test:d1-ui": "node tests/d1-browser.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.119.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.16",
+    "esbuild": "0.28.2"
+  }
+}

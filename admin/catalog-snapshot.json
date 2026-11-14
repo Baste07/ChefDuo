@@ -1,0 +1,621 @@
+{
+  "source_commit": "170ee53",
+  "categories": [
+    {
+      "slug": "poppers-series",
+      "name": "Poppers Series",
+      "image_url": "src/poppers-series.jpg",
+      "sort_order": 0,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "rice-meal",
+      "name": "Rice Meal",
+      "image_url": "src/menu1.jpg",
+      "sort_order": 1,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "ala-cart",
+      "name": "Ala Carte",
+      "image_url": "src/poppersfries.jpg",
+      "sort_order": 2,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "short-order",
+      "name": "Short Order",
+      "image_url": "src/pancit-canton.jpg",
+      "sort_order": 3,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "rice",
+      "name": "Rice",
+      "image_url": "src/CheesyRice.jpg",
+      "sort_order": 4,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "drinks",
+      "name": "Drinks",
+      "image_url": "src/Frappe.jpg",
+      "sort_order": 5,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "desserts",
+      "name": "Desserts",
+      "image_url": "src/MiniCheesecake.png",
+      "sort_order": 6,
+      "status": "published",
+      "description": ""
+    },
+    {
+      "slug": "sushi",
+      "name": "Sushi",
+      "image_url": "src/all-sushi-preview-960.webp",
+      "sort_order": 7,
+      "status": "published",
+      "description": ""
+    }
+  ],
+  "products": [
+    {
+      "legacy_key": "poppers-series",
+      "name": "Poppers Series",
+      "category_slug": "poppers-series",
+      "image_url": "src/poppers-series.jpg",
+      "price_cents": 10400,
+      "variants": [],
+      "flavors": [
+        "Cheese Sauce",
+        "Honey Mustard",
+        "White Dressing",
+        "Tonkatsu Sauce",
+        "Diablo Sauce",
+        "Sriracha Sauce",
+        "Sriracha Mayo"
+      ],
+      "status": "published",
+      "sort_order": 0,
+      "description": "Cheesy Rice comes with different flavors available:   Cheese Sauce, Honey Mustard, White Dressing, Tonkatsu Sauce, Diablo Sauce, Sriracha Sauce, and Sriracha Mayo",
+      "featured_order": 0
+    },
+    {
+      "legacy_key": "cheesy-spicy-tocino",
+      "name": "Cheesy Spicy Tocino",
+      "category_slug": "rice-meal",
+      "image_url": "src/FoodImg2.jpg",
+      "price_cents": 11900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 1,
+      "description": ""
+    },
+    {
+      "legacy_key": "cheesy-spicy-hungarian",
+      "name": "Cheesy Spicy Hungarian",
+      "category_slug": "rice-meal",
+      "image_url": "src/menu2.jpg",
+      "price_cents": 11900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 2,
+      "description": ""
+    },
+    {
+      "legacy_key": "marinated-porksilog",
+      "name": "Marinated Porksilog",
+      "category_slug": "rice-meal",
+      "image_url": "src/marinated.jpg",
+      "price_cents": 11400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 3,
+      "description": "Garlic rice, marinated pork chop, sunny-side-up egg, and ketchup on the side.",
+      "featured_order": 1
+    },
+    {
+      "legacy_key": "og-tapsilog-the-original",
+      "name": "OG Tapsilog \"The Original\"",
+      "category_slug": "rice-meal",
+      "image_url": "src/og-tapa.jpg",
+      "price_cents": 11400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 4,
+      "description": "Garlic rice, beef tapa, sunny-side-up egg, and signature vinegar.",
+      "featured_order": 2
+    },
+    {
+      "legacy_key": "breaded-porkchop",
+      "name": "Breaded Porkchop",
+      "category_slug": "rice-meal",
+      "image_url": "src/menu5.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 5,
+      "description": ""
+    },
+    {
+      "legacy_key": "coated-tonkatsu",
+      "name": "Coated Tonkatsu",
+      "category_slug": "rice-meal",
+      "image_url": "src/FoodImg7.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 6,
+      "description": ""
+    },
+    {
+      "legacy_key": "diablo",
+      "name": "Diablo",
+      "category_slug": "rice-meal",
+      "image_url": "src/menu3.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 7,
+      "description": ""
+    },
+    {
+      "legacy_key": "cheesy-tapa",
+      "name": "Cheesy Tapa",
+      "category_slug": "rice-meal",
+      "image_url": "src/cheesy-tapa.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 8,
+      "description": ""
+    },
+    {
+      "legacy_key": "spicy-tapa",
+      "name": "Spicy Tapa",
+      "category_slug": "rice-meal",
+      "image_url": "src/SpicyTapa.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 9,
+      "description": ""
+    },
+    {
+      "legacy_key": "chicken-sriracha",
+      "name": "Chicken Sriracha",
+      "category_slug": "rice-meal",
+      "image_url": "src/ChickenSriracha.jpg",
+      "price_cents": 12400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 10,
+      "description": ""
+    },
+    {
+      "legacy_key": "chicken-fries",
+      "name": "Chicken & Fries",
+      "category_slug": "rice-meal",
+      "image_url": "src/chicken-fries.jpg",
+      "price_cents": 12900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 11,
+      "description": ""
+    },
+    {
+      "legacy_key": "poppers-rice",
+      "name": "Poppers & Rice",
+      "category_slug": "rice-meal",
+      "image_url": "src/PoppersAndRice.jpg",
+      "price_cents": 12900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 12,
+      "description": "Cheesy rice, Sriracha-flavored poppers, cheese sauce drizzled over the poppers, and cabbage topped with white dressing.",
+      "featured_order": 3
+    },
+    {
+      "legacy_key": "lechon-kawali",
+      "name": "Lechon Kawali",
+      "category_slug": "rice-meal",
+      "image_url": "src/menu4.jpg",
+      "price_cents": 12900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 13,
+      "description": ""
+    },
+    {
+      "legacy_key": "sizzling-sisig",
+      "name": "Sizzling Sisig",
+      "category_slug": "rice-meal",
+      "image_url": "src/FoodImg15.jpg",
+      "price_cents": 12900,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 14,
+      "description": "Plain rice, chopped pork, white and red onions, green chili peppers, and signature sisig sauce, topped with an egg for dine-in or sautéed egg for takeout.",
+      "featured_order": 4
+    },
+    {
+      "legacy_key": "herb-chicken",
+      "name": "Herb Chicken",
+      "category_slug": "rice-meal",
+      "image_url": "src/menu1.jpg",
+      "price_cents": 15400,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 15,
+      "description": ""
+    },
+    {
+      "legacy_key": "special-beef-mami",
+      "name": "Special Beef Mami",
+      "category_slug": "ala-cart",
+      "image_url": "src/beefmami.jpg",
+      "price_cents": 8000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 16,
+      "description": ""
+    },
+    {
+      "legacy_key": "fries-solo-w-cheese-dip",
+      "name": "Fries Solo w/ Cheese Dip",
+      "category_slug": "ala-cart",
+      "image_url": "src/solofries.png",
+      "price_cents": 8000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 17,
+      "description": ""
+    },
+    {
+      "legacy_key": "tapa-puluts",
+      "name": "Tapa Puluts",
+      "category_slug": "ala-cart",
+      "image_url": "src/tapa-puluts.jpg",
+      "price_cents": 13000,
+      "variants": [],
+      "flavors": [
+        "🍃 Not Spicy",
+        "🌶️ Spicy"
+      ],
+      "status": "published",
+      "sort_order": 18,
+      "description": ""
+    },
+    {
+      "legacy_key": "chicken-poppers-ala-carte",
+      "name": "Chicken Poppers Ala Carte",
+      "category_slug": "ala-cart",
+      "image_url": "src/diablo.jpg",
+      "price_cents": 13000,
+      "variants": [],
+      "flavors": [
+        "Cheese Sauce",
+        "Honey Mustard",
+        "White Dressing",
+        "Tonkatsu Sauce",
+        "Diablo Sauce",
+        "Sriracha Sauce",
+        "Sriracha Mayo"
+      ],
+      "status": "published",
+      "sort_order": 19,
+      "description": ""
+    },
+    {
+      "legacy_key": "sisig-ala-carte",
+      "name": "Sisig Ala Carte",
+      "category_slug": "ala-cart",
+      "image_url": "src/sisig.jpg",
+      "price_cents": 15500,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 20,
+      "description": ""
+    },
+    {
+      "legacy_key": "poppers-fries",
+      "name": "Poppers & Fries",
+      "category_slug": "ala-cart",
+      "image_url": "src/poppersfries.jpg",
+      "price_cents": 16500,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 21,
+      "description": ""
+    },
+    {
+      "legacy_key": "pancit-mix",
+      "name": "Pancit Mix",
+      "category_slug": "short-order",
+      "image_url": "src/pancitmix.jpg",
+      "price_cents": 17000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 22,
+      "description": ""
+    },
+    {
+      "legacy_key": "pancit-bihon",
+      "name": "Pancit Bihon",
+      "category_slug": "short-order",
+      "image_url": "src/pancitbihon.jpg",
+      "price_cents": 17000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 23,
+      "description": ""
+    },
+    {
+      "legacy_key": "pancit-canton",
+      "name": "Pancit Canton",
+      "category_slug": "short-order",
+      "image_url": "src/pancit-canton.jpg",
+      "price_cents": 18000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 24,
+      "description": ""
+    },
+    {
+      "legacy_key": "plain-rice",
+      "name": "Plain Rice",
+      "category_slug": "rice",
+      "image_url": "src/PlainRice.jpg",
+      "price_cents": 1700,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 25,
+      "description": ""
+    },
+    {
+      "legacy_key": "cheesy-rice",
+      "name": "Cheesy Rice",
+      "category_slug": "rice",
+      "image_url": "src/CheesyRice.jpg",
+      "price_cents": 2200,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 26,
+      "description": ""
+    },
+    {
+      "legacy_key": "garlic-rice",
+      "name": "Garlic Rice",
+      "category_slug": "rice",
+      "image_url": "src/GarlicRice.jpg",
+      "price_cents": 2000,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 27,
+      "description": ""
+    },
+    {
+      "legacy_key": "spicy-rice",
+      "name": "Spicy Rice",
+      "category_slug": "rice",
+      "image_url": "src/SpicyRice.jpg",
+      "price_cents": 2200,
+      "variants": [],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 28,
+      "description": ""
+    },
+    {
+      "legacy_key": "frappe",
+      "name": "Frappe",
+      "category_slug": "drinks",
+      "image_url": "src/Frappe.jpg",
+      "price_cents": 8900,
+      "variants": [],
+      "flavors": [
+        "Cookies & Cream",
+        "Java Chips",
+        "Milk Chocolate",
+        "Frappucino",
+        "Oreo Cheesecake",
+        "Avocado",
+        "Strawberry"
+      ],
+      "status": "published",
+      "sort_order": 29,
+      "description": ""
+    },
+    {
+      "legacy_key": "fruit-soda",
+      "name": "Fruit Soda",
+      "category_slug": "drinks",
+      "image_url": "src/fruitsoda.jpg",
+      "price_cents": 7900,
+      "variants": [],
+      "flavors": [
+        "Blueberry",
+        "Green Apple",
+        "Passion Fruit"
+      ],
+      "status": "published",
+      "sort_order": 30,
+      "description": ""
+    },
+    {
+      "legacy_key": "iced-coffee",
+      "name": "Iced Coffee",
+      "category_slug": "drinks",
+      "image_url": "src/Coffee.jpg",
+      "price_cents": 8900,
+      "variants": [],
+      "flavors": [
+        "Classic",
+        "Hazelnut"
+      ],
+      "status": "published",
+      "sort_order": 31,
+      "description": ""
+    },
+    {
+      "legacy_key": "pitcher-drinks-1-liter",
+      "name": "Pitcher Drinks - 1 Liter",
+      "category_slug": "drinks",
+      "image_url": "src/pitcher.jpg",
+      "price_cents": null,
+      "variants": [
+        {
+          "name": "Blue Lemonade",
+          "price_cents": 4000
+        },
+        {
+          "name": "Red Iced Tea",
+          "price_cents": 4000
+        },
+        {
+          "name": "Cucumber",
+          "price_cents": 4500
+        }
+      ],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 32,
+      "description": ""
+    },
+    {
+      "legacy_key": "waffle",
+      "name": "Waffle",
+      "category_slug": "desserts",
+      "image_url": "src/Waffle.jpg",
+      "price_cents": 8900,
+      "variants": [],
+      "flavors": [
+        "Chocolate Oreo",
+        "Lotus Biscoff",
+        "Nutella Alcapone"
+      ],
+      "status": "published",
+      "sort_order": 33,
+      "description": ""
+    },
+    {
+      "legacy_key": "mini-cheesecake-in-a-cup",
+      "name": "Mini Cheesecake in a Cup",
+      "category_slug": "desserts",
+      "image_url": "src/MiniCheesecake.png",
+      "price_cents": null,
+      "variants": [
+        {
+          "name": "Blueberry Cheesecake",
+          "price_cents": 6500
+        },
+        {
+          "name": "Oreo Cheesecake",
+          "price_cents": 6000
+        }
+      ],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 34,
+      "description": ""
+    },
+    {
+      "legacy_key": "california-maki",
+      "name": "California Maki",
+      "category_slug": "sushi",
+      "image_url": "src/california-maki-960.webp",
+      "price_cents": null,
+      "variants": [
+        {
+          "name": "4 pcs",
+          "price_cents": 8900
+        },
+        {
+          "name": "8 pcs",
+          "price_cents": 16900
+        }
+      ],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 35,
+      "description": ""
+    },
+    {
+      "legacy_key": "mango-kani-maki",
+      "name": "Mango Kani Maki",
+      "category_slug": "sushi",
+      "image_url": "src/mango-kani-maki-960.webp",
+      "price_cents": null,
+      "variants": [
+        {
+          "name": "4 pcs",
+          "price_cents": 9900
+        },
+        {
+          "name": "8 pcs",
+          "price_cents": 17900
+        }
+      ],
+      "flavors": [],
+      "status": "published",
+      "sort_order": 36,
+      "description": ""
+    },
+    {
+      "legacy_key": "volcano-maki",
+      "name": "Volcano Maki",
+      "category_slug": "sushi",
+      "image_url": "src/volcano-maki-960.webp",
+      "price_cents": null,
+      "variants": [
+        {
+          "name": "4 pcs",
+          "price_cents": 10900
+        },
+        {
+          "name": "8 pcs",
+          "price_cents": 18900
+        }
+      ],
+      "flavors": [
+        "🌶️ Spicy"
+      ],
+      "status": "published",
+      "sort_order": 37,
+      "description": ""
+    }
+  ]
+}
