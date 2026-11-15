@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {catalogChanges,oneStepRecovery,manilaDate} from '../admin/draft-review.js';
+const before = {products:[{id:'a',name:'Cheesy Rice',price_cents:2200,available:true,sort_order:26,variants:[],image_url:'x'},{id:'b',name:'Other',price_cents:5000}],categories:[{id:'c',name:'Rice',sort_order:4}]};
+const after=structuredClone(before);after.products[0].price_cents=2100;
+test('single price change has exactly one field difference',()=>{const c=catalogChanges(before,after);assert.equal(c.length,1);assert.deepEqual(c[0].fields,[{field:'price_cents',from:2200,to:2100}]);});
+test('array ordering does not create false changes',()=>{const c=structuredClone(before);c.products.reverse();assert.deepEqual(catalogChanges(before,c),[]);});
+test('added removed hidden images variants and categories appear',()=>{const c=structuredClone(before);c.products.shift();c.products.push({id:'n',name:'New',price_cents:3500});c.products[0].status='hidden';c.products[0].variants=[{name:'A',price_cents:3500}];c.products[0].image_url='new';c.categories[0].name='New Rice';const changes=catalogChanges(before,c);assert.equal(changes.length,4);assert.deepEqual(changes.map(x=>x.type),['Removed','Edited','Added','Edited']);});
+test('empty or duplicate data fails closed',()=>{assert.deepEqual(catalogChanges(before,before),[]);assert.throws(()=>catalogChanges(before,{}),/unavailable/);assert.throws(()=>catalogChanges(before,{...before,products:[before.products[0],before.products[0]]}),/identities/);});
+test('recovery offers only the immediately previous draft',()=>{const e=[{id:1,version:2,action:'DRAFT_SAVE',before_value:{},after_value:{}},{id:2,version:3,action:'DRAFT_SAVE',before_value:{},after_value:{}},{id:3,version:4,action:'DRAFT_RESTORE',before_value:{},after_value:{}},{id:4,version:5,action:'DRAFT_SAVE',before_value:{},after_value:{}}];assert.equal(oneStepRecovery(e,5).id,4);assert.equal(oneStepRecovery(e,4),null);});
+test('Manila dates are formatted consistently',()=>{assert.match(manilaDate('2026-11-15T10:50:30+00:00'),/Nov/);assert.equal(manilaDate('invalid'),'Date unavailable');});

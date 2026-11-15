@@ -46,6 +46,13 @@ export class CatalogDrafts {
   }
   async publish(){const r=await this.rpc('publish');await this.read();return r;}
   async events(){return this.rpc('events');}
+  async published(){
+    const {data,error}=await this.client.rpc('chefduo_catalog_snapshot');
+    if(error)throw Error('The published menu could not be verified. Review was stopped.');
+    const snapshot=await validateSnapshot(data,this.sequence||0);
+    if(snapshot.state!=='available')throw Error('The published menu is unavailable. Review was stopped.');
+    return snapshot;
+  }
   async restore(eventId){await this.rpc('restore',{event_id:eventId});return this.read();}
   async upload(file){
     if(!this.imageEditing)throw Error('Image uploads and replacements are disabled in this release.');

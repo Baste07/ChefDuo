@@ -1,4 +1,5 @@
 import {CatalogDrafts,parseCentavos} from "./catalog-drafts.js";
+import {catalogChanges,oneStepRecovery,manilaDate} from "./draft-review.js";
 import { bindImage } from "./images.js";
 import { accountOperation, readConfig, connection, allowPreview, authorize, loadCatalog, result, upload, imageURL, money, root } from "./data.js";
 const inviteParams = new URLSearchParams(location.hash.slice(1));
@@ -37,6 +38,18 @@ function toast(message) {
   document.body.append(n);
   setTimeout(() => n.remove(), 6e3);
 }
+
+function savedDraftNotice() {
+  document.querySelector(".toast")?.remove();
+  const n = e("div","toast");
+  n.setAttribute("role","status");
+  n.append(e("strong","","Saved as Draft " + drafts.version),
+    e("p","","Your changes are saved, not live. Review the changes on the Dashboard before publishing."),
+    link("Review on Dashboard",href(""),"button"));
+  document.body.append(n);
+  setTimeout(()=>n.remove(),9000);
+}
+
 function fail(error) {
   const message = error.message || "Something went wrong. Please try again.";
   const dialog = document.querySelector("dialog[open]");
@@ -104,7 +117,7 @@ async function save(table, payload, id, stamp) {
   guardWrite();
   const row = await drafts.save(table,payload,id);
   catalog=drafts.view();
-  toast("Draft saved. Customer prices change only after a complete revision is published.");
+  savedDraftNotice();
   return row;
 }
 
@@ -142,7 +155,7 @@ async function remove(table, item) {
       const refreshed=true;
       d.close();
       render();
-      toast(refreshed ? "Item deleted." : "Deleted. Catalog refresh failed; reload before another change.");
+      if(refreshed)savedDraftNotice();else toast("Deletion saved, but refresh failed. Reload before another change.");
     } catch (err) {
       fail(err);
     } finally {
@@ -253,6 +266,87 @@ function recent(logs) {
 async function draftActivity(){
   return (await drafts.events()).map(row=>({...row,actor_email:row.actor_id===user.id?user.email:'Staff '+row.actor_id}));
 }
+
+function changeSummary(field) {
+  const {from,to}=field;
+  const show=value=>value===undefined?"not set":value===null?"none":String(value);
+  if(field.field==="price_cents") return "Price: " + (Number.isInteger(from)?money(from):"none") + " → " + (Number.isInteger(to)?money(to):"none");
+  if(field.field==="status") return "Visibility: " + show(from) + " → " + show(to);
+  if(field.field==="available") return "Availability: " + (from===false?"Unavailable":"Available") + " → " + (to===false?"Unavailable":"Available");
+  if(field.field==="sort_order") return "Display order: " + show(from) + " → " + show(to);
+  if(field.field==="name") return "Name: " + show(from) + " → " + show(to);
+  if(field.field==="category_id") return "Category changed";
+  if(field.field==="variants") return "Price options / variants changed";
+  if(field.field==="image_url"||field.field==="image_path") return "Product image changed";
+  if(field.field==="flavors") return "Flavors or sauces changed";
+  if(field.field==="description") return "Description changed";
+  return field.field.replaceAll("_"," ") + " changed";
+}
+async function showDraftChanges() {
+  guardWrite();
+  const version=drafts.version,sequence=drafts.sequence;
+  const [published,events]=await Promise.all([drafts.published(),drafts.events()]);
+  if(published.sequence!==sequence)throw Error("The live revision changed. Reload the Dashboard before reviewing.");
+  const changes=catalogChanges(published.payload,drafts.catalog);
+  const last=events.filter(row=>row.version===version).sort((a,b)=>b.id-a.id)[0];
+  const {d,f}=modal("Review Draft "+version);
+  f.append(e("p","muted","Draft "+version+" · "+(last?"Saved "+manilaDate(last.occurred_at):"Save date unavailable")+" · Live revision "+sequence));
+  f.append(e("p","",changes.length?
+    changes.length+" changed item"+(changes.length===1?"":"s")+" will be included in the next publication. All other products and categories stay unchanged.":
+    "No unpublished changes. Your published menu is already up to date."));
+  const review=e("div","activity");
+  for(const change of changes){
+    const row=e("article");
+    row.append(e("strong","",change.type+" "+(change.section==="products"?"product":"category")+": "+change.name));
+    if(change.type==="Added")row.append(e("p","muted","New item in draft"));
+    if(change.type==="Removed")row.append(e("p","muted","Removed from draft"));
+    for(const detail of change.fields)row.append(e("p","muted",changeSummary(detail)));
+    review.append(row);
+  }
+  f.append(review,button("Close",()=>d.close()));
+  if(changes.length){
+    const action=button("Publish Draft "+version,async()=>{
+      guardWrite();
+      if(drafts.version!==version||drafts.sequence!==sequence)throw Error("The draft changed. Review it again before publishing.");
+      action.disabled=true;
+      try{
+        await drafts.publish();
+        await refresh();
+        d.close();
+        await render();
+        toast("Draft "+version+" published successfully.");
+      }catch(error){action.disabled=false;throw error;}
+    },"primary");
+    f.append(action);
+  }
+}
+async function showDraftRecovery() {
+  guardWrite();
+  const version=drafts.version;
+  const events=await drafts.events();
+  const save=oneStepRecovery(events,version);
+  const {d,f}=modal("Recover previous draft");
+  if(save){
+    const prior=events.filter(row=>row.version===version-1).sort((a,b)=>b.id-a.id)[0];
+    f.append(e("p","","Restore Draft "+(version-1)),
+      e("p","muted",prior?"Saved "+manilaDate(prior.occurred_at):"Previous draft saved before "+manilaDate(save.occurred_at)),
+      e("p","muted","Restores the previous draft contents as a new version. Your published menu and full activity history stay unchanged."));
+    const action=button("Restore Draft "+(version-1),async()=>{
+      if(drafts.version!==version)throw Error("The draft changed. Reload before recovery.");
+      action.disabled=true;
+      try{
+        await drafts.restore(save.id);
+        await refresh();
+        d.close();
+        await render();
+        toast("Previous draft recovered as Draft "+drafts.version+". It is not published.");
+      }catch(error){action.disabled=false;throw error;}
+    },"primary");
+    f.append(action);
+  }else f.append(e("p","muted","No immediately previous saved draft is available. Older events remain in the Activity log."));
+  f.append(button("Close",()=>d.close()));
+}
+
 async function dashboard(main) {
   heading(main, "Your menu, at a glance.", "Keep every dish up to date, from wherever you are.", existingItemsOnly?e('p','notice','Existing items only; image management remains disabled.'):link("+ Add product", href("products/new"), "button primary"));
   const metrics = e("div", "metrics");
@@ -264,15 +358,9 @@ async function dashboard(main) {
   main.append(metrics);
   if(drafts && drafts.editingEnabled!==false){
     const panel=e("section","panel");
-    panel.append(e("h2","","Review and publish"),e("p","muted",`Draft version ${drafts.version} · Live revision ${drafts.sequence}. Review all products, prices and images before publishing.`));
-    panel.append(button("Preview publication",()=>{
-      const {d,f}=modal("Publish a complete catalog revision?");
-      f.append(e("p","",`${catalog.products.filter(p=>p.status==='published'&&p.available!==false&&catalog.categories.some(c=>c.id===p.category_id&&c.status==='published')).length} available products. Hidden, archived and unavailable products will be omitted. Older snapshots remain intact.`));
-      const review=e("div","activity");
-      for(const p of catalog.products)review.append(e("p","",`${p.name} · ${p.status} · ${p.available===false?'Unavailable':p.price_cents===null?p.variants.map(v=>v.name+': '+money(v.price_cents)).join(', '):money(p.price_cents)}`));
-      f.append(review,button("Cancel",()=>d.close()),button("Publish revision",async()=>{guardWrite();await drafts.publish();await refresh();d.close();await render();toast("Complete revision published.");},"primary"));
-    },"primary"));
-    panel.append(button("Draft recovery history",async()=>{const events=await drafts.events();const {d,f}=modal("Recover a previous draft");for(const event of events.filter(x=>x.action==='DRAFT_SAVE'))f.append(button(`Restore draft before version ${event.version}`,async()=>{await drafts.restore(event.id);await refresh();d.close();await render();toast("Draft restored. Publish separately after review.");}));f.append(button("Close",()=>d.close()));}));
+    panel.append(e("h2","","Review and publish"),e("p","muted",`Draft ${drafts.version} · Live revision ${drafts.sequence}. Preview only the changes before publishing.`));
+    panel.append(button("Preview publication",showDraftChanges,"primary"));
+    panel.append(button("Recover previous draft",showDraftRecovery));
     main.append(panel);
   }else main.append(e("p","notice","Catalog editing and publishing are disabled. The published customer menu remains available."));
   const grid = e("div", "two"), activity = e("section", "panel"), quick = e("section", "panel");
@@ -494,6 +582,7 @@ async function editProduct(main) {
       await save("menu_products", payload, item?.id, item?.updated_at);
       dirty = false;
       window.removeEventListener("beforeunload", leaveWarning);
+      try{sessionStorage.setItem("chefduo-draft-saved",String(drafts.version));}catch{}
       location.href = href("products");
     } catch (err) {
       // A verified orphan upload is retained for later authorized, reference-aware GC.
@@ -713,6 +802,7 @@ async function start() {
     });
     if(!["settings","admins"].includes(route))await refresh();
     await render();
+    try{if(sessionStorage.getItem("chefduo-draft-saved")){sessionStorage.removeItem("chefduo-draft-saved");savedDraftNotice();}}catch{}
   } catch (err) {
     app.replaceChildren(e("p", "error", err.message), link("Return to sign in", new URL("login/", adminURL).href));
   }
