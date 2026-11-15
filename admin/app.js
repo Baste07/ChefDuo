@@ -103,7 +103,7 @@ function guardWrite() {
 async function save(table, payload, id, stamp) {
   guardWrite();
   const row = await drafts.save(table,payload,id);
-  catalog=structuredClone(drafts.catalog);
+  catalog=drafts.view();
   toast("Draft saved. Customer prices change only after a complete revision is published.");
   return row;
 }
@@ -138,7 +138,7 @@ async function remove(table, item) {
     submit.disabled = true;
     try {
       await drafts.remove(table,item);
-      catalog=structuredClone(drafts.catalog);
+      catalog=drafts.view();
       const refreshed=true;
       d.close();
       render();
@@ -483,7 +483,8 @@ async function editProduct(main) {
     submit.disabled = true;
     let uploaded;
     try {
-      const payload = { sort_order:Number(order.input.value), available:availability.input.value==="yes", name: name.input.value.trim(), category_id: category.input.value, description: description.input.value.trim(), status: state.input.value, price_cents: mode.input.value === "base" ? parseCentavos(price.input.value) : null, variants: mode.input.value === "variants" ? variantInputs.map((x) => ({ name: x.n.input.value.trim(), price_cents: parseCentavos(x.p.input.value) })) : [], flavors: flavors.input.value.split("\n").map((v) => v.trim()).filter(Boolean) };
+      const payload = { sort_order:Number(order.input.value), name: name.input.value.trim(), category_id: category.input.value, description: description.input.value.trim(), status: state.input.value, price_cents: mode.input.value === "base" ? parseCentavos(price.input.value) : null, variants: mode.input.value === "variants" ? variantInputs.map((x) => ({ name: x.n.input.value.trim(), price_cents: parseCentavos(x.p.input.value) })) : [], flavors: flavors.input.value.split("\n").map((v) => v.trim()).filter(Boolean) };
+      if (!item || Object.hasOwn(item, "available")) payload.available = availability.input.value === "yes";
       if (mode.input.value === "variants" && !payload.variants.length) throw new Error("Add at least one price variant.");
       if (imageEditing && image.input.files[0]) {
         uploaded = await drafts.upload(image.input.files[0]);

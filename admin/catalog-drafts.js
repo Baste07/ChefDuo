@@ -1,6 +1,11 @@
 import {parseCentavos,validateSnapshot} from '../catalog-protocol.js';
 export {parseCentavos};
 const tables={menu_products:'products',menu_categories:'categories'};
+function orderedCatalog(catalog){
+  const view=structuredClone(catalog);
+  for(const key of ['products','categories'])view[key].sort((a,b)=>a.sort_order-b.sort_order||a.id.localeCompare(b.id));
+  return view;
+}
 export class CatalogDrafts {
   constructor(client,{imageEditing=true,existingItemsOnly=false,capabilityRead=false}={}){this.client=client;this.imageEditing=imageEditing;this.existingItemsOnly=existingItemsOnly;this.capabilityRead=capabilityRead;this.editingEnabled=capabilityRead?false:undefined;}
   async rpc(action,payload=null){
@@ -19,8 +24,9 @@ export class CatalogDrafts {
       }
     }
     if(!this.capabilityRead||this.editingEnabled){const r=await this.rpc('read');this.version=r.version;this.sequence=r.sequence;this.catalog=r.catalog;}
-    for(const key of ['products','categories'])this.catalog[key].sort((a,b)=>a.sort_order-b.sort_order||a.id.localeCompare(b.id));return structuredClone(this.catalog);
+    return orderedCatalog(this.catalog);
   }
+  view(){return orderedCatalog(this.catalog);}
   async save(table,payload,id){
     const key=tables[table];if(!key)throw Error('Unsupported catalog table');
     const catalog=structuredClone(this.catalog);
