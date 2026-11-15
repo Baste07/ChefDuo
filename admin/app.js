@@ -743,19 +743,22 @@ async function confirmAction(title, message, perform) {
 }
 async function manageAdmins(main) {
   if (!preview && user?.adminRole !== "owner") throw new Error("Only an active Owner can manage administrators.");
-  heading(main, "Manage admins", "Each administrator uses their own email and password.", button("+ Invite admin", inviteAdmin, "primary"));
+  heading(main, "Manage admins", "Each administrator uses their own email and password. At most two active or reserved Owner seats are allowed.", button("+ Invite account", inviteAdmin, "primary"));
   if (preview) {
     main.append(e("div", "empty", "Owner-only page preview. No account information or sample identities are shown. Sign-in and server authorization are required for management."));
     return;
   }
   const data = await accountOperation(client, { action: "list" }), list = e("div", "account-list");
   const ownerCount = data.members.filter((m) => m.role === "owner" && m.status === "active").length;
-  for (const item of [...data.members, ...data.invitations.map((i) => ({ ...i, role: "admin", invitation_status: i.status, status: i.status, added_at: i.created_at, invitation_id: i.id }))]) {
+  const reservedOwners = data.invitations.filter(i => i.requested_role === "owner" && ["provisioning", "sent", "failed"].includes(i.status)).length;
+  const ownerSeats = data.owner_capacity ?? {active:ownerCount,reserved:reservedOwners,limit:2};
+  main.append(e("p", "notice", "Owner seats: " + ownerSeats.active + " active, " + ownerSeats.reserved + " reserved, maximum " + ownerSeats.limit + ". Failed or expired Owner invitations retain their reservation until explicitly canceled. The database enforces capacity."));
+  for (const item of [...data.members, ...data.invitations.map((i) => ({ ...i, role: i.requested_role || i.role || "admin", invitation_status: i.status, status: i.status, added_at: i.created_at, invitation_id: i.id }))]) {
     const card = e("article", "panel account-card");
     card.append(e("h2", "long", item.email), e("p", "", item.role === "owner" ? "Owner / Super Admin" : "Admin"), status(item.status), e("p", "subtle", "Invitation: " + ({ sent: "Email requested", provisioning: "Preparing", failed: "Request failed", accepted: "Accepted", revoked: "Revoked" }[item.invitation_status] || "Not invited")), e("p", "subtle", "Added: " + new Intl.DateTimeFormat("en-PH", { dateStyle: "medium", timeZone: "Asia/Manila" }).format(new Date(item.added_at))));
     const actions = e("div", "actions");
     const act = (label, action, extra = {}) => button(label, () => confirmAction(label, "Confirm this change for " + item.email + ". Access changes apply to subsequent protected operations.", () => accountOperation(client, { action, target: item.user_id, ...extra })));
-    if (["invited", "failed", "sent", "provisioning"].includes(item.status)) actions.append(button("Resend invitation", () => confirmAction("Resend invitation", "A new email will be requested. Wait at least 60 seconds between requests.", () => accountOperation(client, { action: "resend", email: item.email }))));
+    if (["invited", "failed", "sent", "provisioning"].includes(item.status)) actions.append(button("Resend invitation", () => confirmAction("Resend invitation", "A new email will be requested. Wait at least 60 seconds between requests.", () => accountOperation(client, { action: "resend", email: item.email, role: item.requested_role || item.role || "admin" }))));
     if (item.role === "owner" && item.status === "active" && ownerCount === 1) card.append(e("p", "help", "The final active Owner is protected. Authorize a second Owner before changing this account."));
     if (item.status === "active" && !(item.role === "owner" && ownerCount === 1)) actions.append(act("Disable admin", "disable"), act(item.role === "owner" ? "Make Admin" : "Make Owner", "role", { role: item.role === "owner" ? "admin" : "owner" }));
     if (item.status === "disabled") actions.append(act("Restore access", "restore"));
@@ -783,11 +786,14 @@ async function manageAdmins(main) {
 function inviteAdmin() {
   guardSession();
   if (user?.adminRole !== "owner") throw new Error("Owner access required.");
-  const { d, f } = modal("Invite administrator");
+  const { d, f } = modal("Invite account");
   const email = field("Administrator email", "email", "", true);
   email.input.autocomplete = "off";
   email.input.maxLength = 254;
-  f.append(email.label, e("p", "help", "The recipient verifies their email and chooses their own password. New invitations grant the Admin role only."));
+  const roleLabel = e("label", "", "Account role"), role = e("select");
+  for (const [value, title] of [["admin", "Admin"], ["owner", "Owner"]]) { const option = e("option", "", title); option.value = value; role.append(option); }
+  role.value = "admin"; roleLabel.append(role);
+  f.append(email.label, roleLabel, e("p", "help", "The recipient privately verifies the invitation and chooses a password. Owner invitations reserve one of two seats; no account is silently downgraded to Admin. Capacity and authorization are checked by the server."));
   const actions = e("div", "actions");
   const submit = e("button", "primary", "Send invitation");
   submit.type = "submit";
@@ -797,7 +803,7 @@ function inviteAdmin() {
     event.preventDefault();
     submit.disabled = true;
     try {
-      await accountOperation(client, { action: "invite", email: email.input.value.trim() });
+      await accountOperation(client, { action: "invite", email: email.input.value.trim(), role: role.value });
       d.close();
       await render();
       toast("Invitation requested. Check delivery status with your email provider.");
