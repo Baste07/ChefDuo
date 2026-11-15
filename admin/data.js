@@ -20,7 +20,7 @@ function result(r) {
   if (r.error) throw new Error(r.error.message);
   return r.data;
 }
-const money = (cents) => new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", maximumFractionDigits: 2 }).format(cents / 100);
+const money = (cents) => new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", minimumFractionDigits: cents % 100 === 0 ? 0 : 2, maximumFractionDigits: 2 }).format(cents / 100);
 function safeImage(value) {
   if (!value) return "";
   try {

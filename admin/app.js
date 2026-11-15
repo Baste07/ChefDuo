@@ -289,7 +289,7 @@ async function quickPrice(item) {
   const { d, f } = modal("Quick price \xB7 " + item.name);
   const variants = item.variants.length ? item.variants : [{ name: "Price", price_cents: item.price_cents }];
   const fields = variants.map((v) => {
-    const x = field(v.name + " (PHP)", "number", (v.price_cents / 100).toFixed(2), true);
+    const x = field(v.name + " (PHP)", "number", (v.price_cents / 100).toFixed(2).replace(/\.00$/, ""), true);
     x.input.min = "0";
     x.input.inputMode = "decimal";
     x.input.max = "1000000";
@@ -390,7 +390,7 @@ async function editProduct(main) {
   const availability=selectField("Availability",[["yes","Available"],["no","Unavailable — omit from customer menu"]],item?.available===false?"no":"yes");
   const state = selectField("Visibility", [["hidden", "Hidden \u2014 draft"], ["published", "Published"], ["archived", "Archived"]], item?.status || "hidden");
   const mode = selectField("Pricing", [["base", "One price"], ["variants", "Multiple sizes / variants"]], item?.variants?.length ? "variants" : "base");
-  const price = field("Price (PHP)", "number", item?.price_cents !== null && item?.price_cents !== void 0 ? (item.price_cents / 100).toFixed(2) : "");
+  const price = field("Price (PHP)", "number", item?.price_cents !== null && item?.price_cents !== void 0 ? (item.price_cents / 100).toFixed(2).replace(/\.00$/, "") : "");
   price.input.min = "0";
   price.input.step = ".01";
   price.input.inputMode = "decimal";
@@ -399,7 +399,7 @@ async function editProduct(main) {
   const variantInputs = [];
   function addVariant(v = { name: "", price_cents: 0 }) {
     const row = e("div", "inline-fields");
-    const n = field("Size / variant", "text", v.name, true), p = field("Price (PHP)", "number", (v.price_cents / 100).toFixed(2), true);
+    const n = field("Size / variant", "text", v.name, true), p = field("Price (PHP)", "number", (v.price_cents / 100).toFixed(2).replace(/\.00$/, ""), true);
     p.input.min = "0";
     p.input.step = ".01";
     p.input.inputMode = "decimal";
