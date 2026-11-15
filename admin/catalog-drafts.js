@@ -1,14 +1,26 @@
-import {parseCentavos} from '../catalog-protocol.js';
+import {parseCentavos,validateSnapshot} from '../catalog-protocol.js';
 export {parseCentavos};
 const tables={menu_products:'products',menu_categories:'categories'};
 export class CatalogDrafts {
-  constructor(client,{imageEditing=true,existingItemsOnly=false}={}){this.client=client;this.imageEditing=imageEditing;this.existingItemsOnly=existingItemsOnly;}
+  constructor(client,{imageEditing=true,existingItemsOnly=false,capabilityRead=false}={}){this.client=client;this.imageEditing=imageEditing;this.existingItemsOnly=existingItemsOnly;this.capabilityRead=capabilityRead;this.editingEnabled=capabilityRead?false:undefined;}
   async rpc(action,payload=null){
+    if(['save','publish','restore'].includes(action)&&this.editingEnabled===false)throw Error('Catalog editing and publishing are disabled.');
     const {data,error}=await this.client.rpc('chefduo_catalog_admin',{p_action:action,p_expected:this.version??null,p_payload:payload});
     if(error)throw Error(error.message);
     return data;
   }
-  async read(){const r=await this.rpc('read');this.version=r.version;this.sequence=r.sequence;this.catalog=r.catalog;for(const key of ['products','categories'])this.catalog[key].sort((a,b)=>a.sort_order-b.sort_order||a.id.localeCompare(b.id));return structuredClone(this.catalog);}
+  async read(){
+    if(this.capabilityRead){
+      const {data:cap,error}=await this.client.rpc('chefduo_catalog_capabilities');if(error||typeof cap?.product_editing!=='boolean')throw Error('Catalog access could not be verified.');
+      this.editingEnabled=cap.product_editing===true;
+      if(!this.editingEnabled){
+        const {data,error}=await this.client.rpc('chefduo_catalog_snapshot');if(error)throw Error('Published catalog is unavailable.');
+        const published=await validateSnapshot(data,this.sequence||0);this.version=null;this.sequence=published.sequence;this.catalog=published.payload;
+      }
+    }
+    if(!this.capabilityRead||this.editingEnabled){const r=await this.rpc('read');this.version=r.version;this.sequence=r.sequence;this.catalog=r.catalog;}
+    for(const key of ['products','categories'])this.catalog[key].sort((a,b)=>a.sort_order-b.sort_order||a.id.localeCompare(b.id));return structuredClone(this.catalog);
+  }
   async save(table,payload,id){
     const key=tables[table];if(!key)throw Error('Unsupported catalog table');
     const catalog=structuredClone(this.catalog);

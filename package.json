@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:admin": "node tools/build-stage-d1.mjs --admin-only"
+    "build:admin": "node tools/build-stage-d1-r2.mjs --admin-only"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.119.0"

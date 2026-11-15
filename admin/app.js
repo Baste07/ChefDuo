@@ -98,7 +98,7 @@ function guardSession() {
 }
 function guardWrite() {
   guardSession();
-  if (!drafts) throw new Error("Catalog editing is not activated. No live catalog change was made.");
+  if (!drafts || drafts.editingEnabled===false) throw new Error("Catalog editing is not activated. No live catalog change was made.");
 }
 async function save(table, payload, id, stamp) {
   guardWrite();
@@ -262,7 +262,7 @@ async function dashboard(main) {
     metrics.append(n);
   }
   main.append(metrics);
-  if(drafts){
+  if(drafts && drafts.editingEnabled!==false){
     const panel=e("section","panel");
     panel.append(e("h2","","Review and publish"),e("p","muted",`Draft version ${drafts.version} · Live revision ${drafts.sequence}. Review all products, prices and images before publishing.`));
     panel.append(button("Preview publication",()=>{
@@ -274,9 +274,9 @@ async function dashboard(main) {
     },"primary"));
     panel.append(button("Draft recovery history",async()=>{const events=await drafts.events();const {d,f}=modal("Recover a previous draft");for(const event of events.filter(x=>x.action==='DRAFT_SAVE'))f.append(button(`Restore draft before version ${event.version}`,async()=>{await drafts.restore(event.id);await refresh();d.close();await render();toast("Draft restored. Publish separately after review.");}));f.append(button("Close",()=>d.close()));}));
     main.append(panel);
-  }else main.append(e("p","notice","Catalog editing and publishing are disabled. The customer menu remains frozen."));
+  }else main.append(e("p","notice","Catalog editing and publishing are disabled. The published customer menu remains available."));
   const grid = e("div", "two"), activity = e("section", "panel"), quick = e("section", "panel");
-  activity.append(e("h2", "", "Recent menu activity"), recent(preview ? [] : drafts ? (await draftActivity()).slice(0,5) : result(await client.from("menu_audit_logs").select("*").order("occurred_at", { ascending: false }).limit(5))));
+  activity.append(e("h2", "", "Recent menu activity"), recent(preview ? [] : drafts && drafts.editingEnabled!==false ? (await draftActivity()).slice(0,5) : result(await client.from("menu_audit_logs").select("*").order("occurred_at", { ascending: false }).limit(5))));
   quick.append(e("div", "eyebrow", "Make something delicious"), e("h2", "", "A little update goes a long way."), e("p", "muted", "Refresh a price, add a new favorite or give your menu a new photograph."), link("Manage products", href("products"), "button primary"), e("p", "subtle", preview ? "Counts come from the current public-menu snapshot." : "Draft changes require review and atomic publication. Live editing remains gated until activation."), link("View public website \u2197", "https://chefduo.vercel.app/"));
   grid.append(activity, quick);
   main.append(grid);
@@ -341,8 +341,8 @@ async function products(main) {
       title.append(e("h2", "", item.name), status(item.status));
       info.append(title, e("small", "", categoryOf(item)?.name || "Uncategorized"), e("small", "", item.price_cents !== null ? money(item.price_cents) : item.variants.map((v) => `${v.name}: ${money(v.price_cents)}`).join(" \xB7 ")));
       const actions = e("div", "row-actions");
-      actions.append(link("Edit", href("products/new") + (preview ? "&" : "?") + "id=" + encodeURIComponent(item.id || item.legacy_key)), button("Price", () => quickPrice(item)));
-      if (!preview) {
+      if(drafts?.editingEnabled!==false)actions.append(link("Edit", href("products/new") + (preview ? "&" : "?") + "id=" + encodeURIComponent(item.id || item.legacy_key)), button("Price", () => quickPrice(item)));
+      if (!preview && drafts?.editingEnabled!==false) {
         actions.append(button(item.status === "published" ? "Hide" : "Publish", async () => {
           await save("menu_products", { status: item.status === "published" ? "hidden" : "published" }, item.id, item.updated_at);
           render();
@@ -476,6 +476,7 @@ async function editProduct(main) {
   }
   form.append(dirtyNote, actions);
   main.append(form);
+  if(drafts?.editingEnabled===false){for(const input of form.querySelectorAll('input,textarea,select,button'))input.disabled=true;form.prepend(e('p','notice','Published catalog view. Editing and publishing are disabled.'));}
   form.onsubmit = async (ev) => {
     ev.preventDefault();
     guardWrite();
@@ -502,6 +503,7 @@ async function editProduct(main) {
   };
 }
 async function categoryForm(item) {
+  guardWrite();
   if(existingItemsOnly&&!item)throw Error('New categories remain disabled while image management is held.');
   const { d, f } = modal(item ? "Edit category" : "New category");
   const name = field("Category name", "text", item?.name || "", true), slug = field("Permanent link identifier", "text", item?.slug || "", true), description = field("Description", "textarea", item?.description || ""), order = field("Display order", "number", item?.sort_order || 0, true), state = selectField("Visibility", [["published", "Published"], ["hidden", "Hidden"], ["archived", "Archived"]], item?.status || "hidden"), image = field("Category photograph (max 5 MB)", "file");
@@ -556,7 +558,8 @@ async function categories(main) {
     else bindImage(img, client, item);
     img.alt = item.name;
     const body = e("div", "body");
-    body.append(e("h2", "", item.name), status(item.status), e("p", "subtle", `${catalog.products.filter((p) => (p.category_id || p.category_slug) === (item.id || item.slug)).length} products \xB7 Order ${item.sort_order}`), button("Edit category", () => categoryForm(item)));
+    body.append(e("h2", "", item.name), status(item.status), e("p", "subtle", `${catalog.products.filter((p) => (p.category_id || p.category_slug) === (item.id || item.slug)).length} products \xB7 Order ${item.sort_order}`));
+    if(drafts?.editingEnabled!==false)body.append(button("Edit category", () => categoryForm(item)));
     card.append(img, body);
     grid.append(card);
   }
@@ -565,7 +568,7 @@ async function categories(main) {
 }
 async function audit(main) {
   heading(main, "Activity log", "A read-only history of successful menu changes. Times shown in Asia/Manila.");
-  if(drafts){main.append(recent(await draftActivity()),e('p','subtle','Latest 100 draft/publication events shown. Full before/after payloads are retained server-side for authorized review and recovery.'));return;}
+  if(drafts && drafts.editingEnabled!==false){main.append(recent(await draftActivity()),e('p','subtle','Latest 100 draft/publication events shown. Full before/after payloads are retained server-side for authorized review and recovery.'));return;}
   const panel = e("section", "panel");
   let page = 0;
   const list = e("div");
@@ -662,7 +665,7 @@ async function start() {
     const editingConfig=await readConfig(false);
     imageEditing=editingConfig.imageEditing!==false;
     existingItemsOnly=editingConfig.existingItemsOnly===true;
-    if(client && editingConfig.catalogEditing === "atomic-v1") drafts=new CatalogDrafts(client,{imageEditing,existingItemsOnly});
+    if(client && editingConfig.catalogEditing === "atomic-v1") drafts=new CatalogDrafts(client,{imageEditing,existingItemsOnly,capabilityRead:editingConfig.capabilityRead===true});
     if (preview && !allowPreview) throw new Error("Design preview is available only in the local development checkout.");
     if (preview) {
       catalog = await (await fetch(new URL("admin/catalog-snapshot.json", root))).json();

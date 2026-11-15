@@ -2,6 +2,10 @@
 begin;
 lock table public.menu_products,public.menu_categories in share mode;
 do $$ begin
+ if not (select rolsuper from pg_roles where rolname=current_user)
+ and not (select pg_has_role(current_user,relowner,'USAGE') from pg_class where oid='storage.objects'::regclass)
+ and not coalesce(current_setting('supautils.policy_grants',true)::jsonb->current_user ? 'storage.objects',false)
+ then raise exception 'Supported Storage policy installation authority missing'; end if;
  if (select prosrc from pg_proc where oid='public.chefduo_catalog_snapshot()'::regprocedure) is distinct from '
 declare catalog jsonb;
 begin
@@ -224,6 +228,17 @@ end; $$;
 revoke all on function chefduo_private.catalog_canonical(jsonb),chefduo_private.catalog_hash(jsonb),chefduo_private.catalog_staff(),chefduo_private.catalog_validate(jsonb),chefduo_private.catalog_visible(jsonb),chefduo_private.catalog_operation(text,integer,jsonb),chefduo_private.catalog_snapshot(),public.chefduo_catalog_admin(text,integer,jsonb),public.chefduo_catalog_snapshot() from public,anon,authenticated,service_role;
 grant execute on function chefduo_private.catalog_operation(text,integer,jsonb),public.chefduo_catalog_admin(text,integer,jsonb) to authenticated;
 grant execute on function chefduo_private.catalog_snapshot(),public.chefduo_catalog_snapshot() to anon,authenticated;
+
+
+-- Authenticated capability metadata only; pre-activation data uses the PUBLIC published snapshot.
+create function chefduo_private.catalog_capabilities() returns jsonb language plpgsql security definer set search_path='' as $$
+begin
+ perform chefduo_private.catalog_staff();
+ return jsonb_build_object('product_editing',(select enabled from chefduo_private.catalog_head where singleton),'image_editing',false,'new_items',false);
+end; $$;
+create function public.chefduo_catalog_capabilities() returns jsonb language sql security invoker set search_path='' as $$ select chefduo_private.catalog_capabilities(); $$;
+revoke all on function chefduo_private.catalog_capabilities(),public.chefduo_catalog_capabilities() from public,anon,authenticated,service_role;
+grant execute on function chefduo_private.catalog_capabilities(),public.chefduo_catalog_capabilities() to authenticated;
 
 -- New immutable image namespace: no direct browser writes, including stale staff JWTs.
 -- Provision the separate public bucket via supported Storage API / Dashboard, 5 MiB / JPEG PNG WebP.
