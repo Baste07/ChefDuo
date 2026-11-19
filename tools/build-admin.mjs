@@ -12,6 +12,7 @@ export async function buildAdmin(dir,config){
   await mkdir(dir+'/admin/'+route,{recursive:true});await cp('admin/'+route+'/index.html',dir+'/admin/'+route+'/index.html');
  }
  await cp('admin/admin.css',dir+'/admin/admin.css');
+ await cp('admin/product-placeholder.png',dir+'/assets/product-placeholder.png');
  await writeFile(dir+'/admin/config.json',JSON.stringify({enabled:true,url:config.url,publishableKey:config.publishableKey,catalogEditing:false,allowLocalServices:false,allowLocalPreview:false},null,2));
  await writeFile(dir+'/_redirects','/ /admin/login/ 302\n');
  await writeFile(dir+'/404.html','<!doctype html><title>Not found</title><p>Page not found.</p>');
