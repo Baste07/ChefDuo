@@ -252,6 +252,8 @@ async function login() {
         await client.auth.signOut();
         throw new Error("This account is not authorized to manage ChefDuo.");
       }
+      // A verified new login replaces the expired/signed-out inactivity marker.
+      beginIdleSession(user.id);
       location.href = href("");
     } catch (err) {
       message.className = "error";
