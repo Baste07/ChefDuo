@@ -24,8 +24,10 @@ export async function uploadSelected({client,file,options,validate,readConfig}){
   const r=await fetch(config.url+'/functions/v1/catalog-image',{method:'POST',headers,body:JSON.stringify(body),redirect:'error',signal:AbortSignal.any([...(options.signal?[options.signal]:[]),AbortSignal.timeout(25000)])});
   const result=await r.json();if(!r.ok)throw Error(result.error||'Upload not confirmed.');return result;
  };
+ let issuedTicket;
  const storageUpload=(ticket,bytes,{signal})=>new Promise((resolve,reject)=>{
   if(ticket.bucket!=='menu-images-quarantine'||!uuid.test(ticket.id)||ticket.path!==session.user.id+'/'+ticket.id)return reject(Error('Invalid private upload destination.'));
+  issuedTicket=ticket.id;
   const request=new XMLHttpRequest(),abort=()=>request.abort();
   request.open('POST',config.url+'/storage/v1/object/'+ticket.bucket+'/'+ticket.path);request.timeout=30000;
   request.setRequestHeader('apikey',config.publishableKey);request.setRequestHeader('authorization','Bearer '+session.access_token);request.setRequestHeader('content-type',file.type);request.setRequestHeader('x-upsert','false');
@@ -38,6 +40,6 @@ export async function uploadSelected({client,file,options,validate,readConfig}){
   signal?.addEventListener('abort',abort,{once:true});request.send(bytes);
  });
  const result=await (options.uploader||createQuarantineUploader()).upload({file,product:options.product,operation:options.operation,version:options.version,validate,control,storageUpload,signal:options.signal});
- if(!new RegExp('^https://mprtxauuwvhkicjpkhvw\\.supabase\\.co/functions/v1/catalog-photo/[a-f0-9]{64}\\.png$').test(result.url)||result.product!==options.product||result.operation!==options.operation)throw Object.assign(Error('Upload association is unconfirmed.'),{uncertain:true});
+ if(result.ticket!==issuedTicket||!new RegExp('^https://mprtxauuwvhkicjpkhvw\\.supabase\\.co/functions/v1/catalog-photo/[a-f0-9]{64}\\.png$').test(result.url)||result.product!==options.product||result.operation!==options.operation)throw Object.assign(Error('Upload association is unconfirmed.'),{uncertain:true});
  return result.url;
 }

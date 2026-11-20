@@ -21,6 +21,7 @@ test("draft reads sort only the UI view and preserve raw array order for saves",
   const client = {
     async rpc(name, args) {
       calls.push({ name, args });
+      if (name === 'chefduo_catalog_capabilities') return { data: { product_editing: true, image_editing: false, new_items: false } };
       if (args.p_action === "read") return { data: { version: 1, sequence: 1, catalog } };
       if (args.p_action === "save") {
         catalog = args.p_payload;
@@ -29,7 +30,7 @@ test("draft reads sort only the UI view and preserve raw array order for saves",
       throw new Error(`Unexpected RPC: ${name}`);
     }
   };
-  const drafts = new CatalogDrafts(client);
+  const drafts = new CatalogDrafts(client, { capabilityRead: true });
   const view = await drafts.read();
   assert.deepEqual(view.products.map(row => row.id), ["prod-a", "prod-b"]);
   assert.deepEqual(drafts.catalog.products.map(row => row.id), ["prod-b", "prod-a"]);
