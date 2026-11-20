@@ -1,3 +1,4 @@
+import {privateImage,privatePreview} from './private-images.js';
 import { imageURL, safeImage } from "./data.js";
 const tracked = /* @__PURE__ */ new Map();
 const renewAfter = 4e4;
@@ -12,13 +13,14 @@ async function renew(entry, force = false) {
   if (!force && Date.now() - entry.signedAt < renewAfter) return;
   entry.busy = true;
   try {
-    const url = await imageURL(entry.client, entry.row);
+    const url = privateImage(entry.row.image_url) ? await privatePreview(entry.client,entry.row.image_url) : await imageURL(entry.client, entry.row);
     if (!url) {
       showFailure(entry);
       return;
     }
     if (tracked.get(entry.img) !== entry) return;
     entry.signedAt = Date.now();
+    if(entry.blobURL)URL.revokeObjectURL(entry.blobURL);entry.blobURL=url.startsWith('blob:')?url:null;
     entry.img.src = url;
   } catch {
     showFailure(entry);
@@ -29,6 +31,7 @@ async function renew(entry, force = false) {
 function sweep() {
   for (const [img, entry] of tracked) {
     if (!img.isConnected) {
+      if(entry.blobURL)URL.revokeObjectURL(entry.blobURL);
       observer?.unobserve(img);
       tracked.delete(img);
       continue;
@@ -42,7 +45,7 @@ function sweep() {
   }
 }
 function bindImage(img, client, row) {
-  if (!row.image_path) {
+  if (!row.image_path && !privateImage(row.image_url)) {
     const src = safeImage(row.image_url);
     if (src) img.src = src;
     return;
@@ -50,6 +53,7 @@ function bindImage(img, client, row) {
   const entry = { img, client, row, signedAt: -Infinity, busy: false, retry: false, recoveries: 0 };
   tracked.set(img, entry);
   img.addEventListener("local-photo-selected", () => {
+    if(entry.blobURL)URL.revokeObjectURL(entry.blobURL);
     tracked.delete(img);
     observer?.unobserve(img);
   });

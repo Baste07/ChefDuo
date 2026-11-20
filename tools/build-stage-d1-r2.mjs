@@ -7,8 +7,8 @@ const config=JSON.parse(fs.readFileSync('admin/config.json'));
 if(config.url!=='https://mprtxauuwvhkicjpkhvw.supabase.co')throw Error('Wrong backend');
 const adminOnly=process.argv.includes('--admin-only'),output=adminOnly?'dist-admin':root+'/admin';
 await buildAdmin(path.resolve(output),config);
-fs.writeFileSync(output+'/admin/config.json',JSON.stringify({enabled:true,url:config.url,publishableKey:config.publishableKey,catalogEditing:'atomic-v1',capabilityRead:true,imageEditing:false,existingItemsOnly:true,allowLocalServices:false,allowLocalPreview:false},null,2)+'\n');
-if(adminOnly){console.log('Built repository-only Stage D1 dist-admin; images OFF, server activation required. No deployment.');process.exit(0);}
+fs.writeFileSync(output+'/admin/config.json',JSON.stringify({enabled:true,url:config.url,publishableKey:config.publishableKey,catalogEditing:'atomic-v1',capabilityRead:true,imageEditing:true,existingItemsOnly:true,allowLocalServices:false,allowLocalPreview:false},null,2)+'\n');
+if(adminOnly){const proof=[];walk(output,proof);for(const f of proof)f.path=f.path.slice(output.length+1);console.log('CHEFDUO_RELEASE2_ASSETS:'+JSON.stringify(proof));console.log('Built production Admin; image permission requires backend capability.');process.exit(0);}
 const sources=[];function walk(dir,out,filter=()=>true){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isDirectory())walk(p,out,filter);else if(filter(p))out.push({path:p,bytes:fs.statSync(p).size,sha256:sha(fs.readFileSync(p))});}}
 walk('admin',sources,p=>/\.(js|html|css)$/.test(p));
 for(const p of ['package.json','package-lock.json','catalog-protocol.js','catalog-core.js','tools/build-admin.mjs','tools/build-stage-d1-r2.mjs','tools/prepare-stage-d1-r2.mjs','tools/rehearse-stage-d1-r2.mjs','tools/setup-stage-d1-edge.mjs','tests/stage-d1-r2-browser.mjs','supabase/functions/catalog-image/adapter.js','supabase/functions/catalog-image/handler.js','supabase/functions/catalog-image/index.ts','supabase/functions/admin-accounts/auth-proof.js'])sources.push({path:p,bytes:fs.statSync(p).size,sha256:sha(fs.readFileSync(p))});

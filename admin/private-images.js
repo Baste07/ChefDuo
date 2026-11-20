@@ -5,5 +5,7 @@ export async function privatePreview(client,url,signal){
  const response=await fetch(url,{headers:{authorization:'Bearer '+data.session.access_token},signal,cache:'no-store',redirect:'error'});
  if(!response.ok||response.headers.get('content-type')?.split(';')[0]!=='image/png')throw Error('Private photograph unavailable.');
  const reader=response.body.getReader();const chunks=[];let total=0;try{for(;;){const r=await reader.read();if(r.done)break;total+=r.value.length;if(total>5242880)throw Error('Photograph exceeds preview limit.');chunks.push(r.value);}}finally{await reader.cancel();}
- return URL.createObjectURL(new Blob(chunks,{type:'image/png'}));
+ const bytes=new Uint8Array(total);let at=0;for(const part of chunks){bytes.set(part,at);at+=part.length;}
+ const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');if(digest!==url.split('/').pop().slice(0,-4))throw Error('Private photograph integrity mismatch.');
+ return URL.createObjectURL(new Blob([bytes],{type:'image/png'}));
 }

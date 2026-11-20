@@ -31,10 +31,9 @@ export async function verifyCatalogRevision(catalog, visible, revision) {
     throw new Error("Catalog revision mismatch");
   }
   for (const row of [...visible.categories, ...visible.products]) {
-    const image = new URL(row.image_url);
-    if (image.origin !== "https://mprtxauuwvhkicjpkhvw.supabase.co" || image.username || image.password ||
-        !(image.pathname.startsWith("/storage/v1/object/public/menu-images-public/") || /^\/storage\/v1\/object\/public\/menu-images-revisions\/assets\/[a-f0-9]{64}\.(jpg|png|webp)$/.test(image.pathname)) || image.search || image.hash ||
-        row.image_path || !row.name?.trim()) throw new Error("Invalid catalog display data");
+    const image = new URL(row.image_url,'https://chefduo-admin.pages.dev');
+    const permitted=(image.origin==='https://mprtxauuwvhkicjpkhvw.supabase.co' && (image.pathname.startsWith('/storage/v1/object/public/menu-images-public/') || /^\/storage\/v1\/object\/public\/menu-images-revisions\/assets\/[a-f0-9]{64}\.(jpg|png|webp)$/.test(image.pathname) || /^\/functions\/v1\/catalog-photo\/[a-f0-9]{64}\.png$/.test(image.pathname))) || image.href==='https://chefduo-admin.pages.dev/assets/product-placeholder.png';
+    if(!permitted || image.username || image.password || image.search || image.hash || row.image_path || !row.name?.trim())throw Error('Invalid catalog display data');
   }
   for (const product of visible.products) {
     if (!Array.isArray(product.variants) || (product.price_cents === null) !== (product.variants.length > 0) ||
